@@ -1,0 +1,10 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  full_name: Bob Ross
+
+two:
+  full_name: Diane Warwick
+
+three:
+  full_name: Bad

@@ -1,0 +1,16 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  amount: 100.25
+  credit_card_num: 1234123412341234
+  backer_id: 1
+
+two:
+  amount: 500.36
+  credit_card_num: 1234123412341234123
+  backer_id: 1
+
+three:
+  amount: 1000
+  credit_card_num: 12341234123412341234
+  backer_id: 1

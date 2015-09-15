@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: Cool New Artpiece
+  target_amount: 500.36
+
+two:
+  name: Under_water-Basket
+  target_amount: 4000.89
+
+three:
+  name: Invalid Project Amount
+  target_amount: 0
+
+four:
+  name: Bad
+  target_amount: 1
