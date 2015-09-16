@@ -11,7 +11,33 @@ class Project < ActiveRecord::Base
 	# **2.** The `back` input will back a project with a given name of the
 	# backer, the project to be backed, a credit card number and a backing
 	# dollar amount.
-	def self.back(project_name, credit_card_num, amount)
+	def self.back(project_name, backer_name, credit_card_num, amount)
+		project = Project.find_by(name: project_name)
+		if !project
+			puts "Error: no project found by that name"
+		end
+
+		backer = Backer.find_or_create_by!(full_name: backer_name)
+		
+		contribution = Contribution.create({
+			backer: backer,
+			project: project,
+			credit_card_num: credit_card_num,
+			amount: amount
+			})
+		contribution.save
+		return contribution
+	end
+
+	def self.contribution_details
+		project = Project.find_by(name: project_name)
+		if !project
+			puts "Error: no project found by that name"
+		end
+
+		project.contributions.each do |c|
+			puts "[c.created_at] #{c.backer.full_name} contributed #{c.amount}"
+		end
 
 	end
 

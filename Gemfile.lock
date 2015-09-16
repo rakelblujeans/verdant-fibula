@@ -72,6 +72,7 @@ GEM
     json (1.8.3)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
+    luhn-ruby (1.0.0)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     mime-types (2.6.2)
@@ -120,6 +121,7 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
+    slop (4.2.0)
     spring (1.4.0)
     sprockets (3.3.4)
       rack (~> 1.0)
@@ -155,10 +157,12 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   jbuilder (~> 2.0)
   jquery-rails
+  luhn-ruby
   rails (= 4.2.3)
   rb-readline
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
+  slop
   spring
   sqlite3
   turbolinks
