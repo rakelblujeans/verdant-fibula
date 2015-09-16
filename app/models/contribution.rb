@@ -2,7 +2,7 @@
 class Contribution < ActiveRecord::Base
 	belongs_to :backer
 	belongs_to :project
-	#before_save :remove_whitespace
+	default_scope { order("created_at DESC") }
 
 	# title of project
 	#validates :name, presence: true, length: {minimum:4, maximum: 20}
@@ -13,12 +13,4 @@ class Contribution < ActiveRecord::Base
 	validates :backer, presence: true
 	validates :project, presence: true
 
-	#private
-
-		# def remove_whitespace
-		# 	# remove all extraneous whitespace
-		# 	puts "\n\nBEFORE [#{self.credit_card_num}]"
-		# 	self.credit_card_num = credit_card_num.gsub(/\s+/, "")
-		# 	puts "[AFTER #{self.credit_card_num}]"
-		# end
 end
