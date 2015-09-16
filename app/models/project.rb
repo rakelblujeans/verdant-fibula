@@ -44,12 +44,7 @@ class Project < ActiveRecord::Base
 			amount: amount
 			})
 		
-		if contribution.save
-			return contribution
-		else
-			puts contribution.errors.messages
-			return nil
-		end
+		return contribution
 	end
 
 	def self.contribution_details(project_name)

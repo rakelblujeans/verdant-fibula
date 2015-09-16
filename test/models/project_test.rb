@@ -76,14 +76,14 @@ class ProjectTest < ActiveSupport::TestCase
     @good1 = projects(:one)
     @good1.save
     contribution = Project.back(@good1.name, "John", "1234123412341234", "500")
-    assert_equal nil, contribution
+    assert_equal false, contribution.valid?
   end
 
   test "back handles invalid amount gracefully" do
     @good1 = projects(:one)
     @good1.save
     contribution = Project.back(@good1.name, "John", "378282246310005", "0")
-    assert_equal nil, contribution
+    assert_equal false, contribution.valid?
   end
 
   test "back succeeds with valid input" do

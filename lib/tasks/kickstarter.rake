@@ -77,7 +77,7 @@ task :kickstarter => :environment do
 			return unless check_args(%w[given_name project_name credit_card_num amount], args)
 			
 			contribution = Project.back(args[1], args[0], args[2], args[3])
-			if contribution.valid?
+			if contribution && contribution.valid?
 				puts "#{contribution.backer.full_name} backed project #{contribution.project.name} for #{number_to_currency(contribution.amount)}"
 			else
 				print_errors(contribution)
