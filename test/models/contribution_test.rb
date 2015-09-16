@@ -31,14 +31,23 @@ class ContributionTest < ActiveSupport::TestCase
     assert_not @contrib1.valid?
   end
 
-  test "cc num should be uniqe" do
-  	@contrib1.credit_card_num = 11111111
+  test "cc num should be unique" do
+  	@contrib1.credit_card_num = 4111111111111111
   	@contrib1.save
     assert @contrib1.valid?
 
-    @contrib_invalid.credit_card_num = 11111111
+    @contrib_invalid.credit_card_num = 4111111111111111
   	@contrib_invalid.save
     assert_not @contrib_invalid.valid?
+  end
+
+  test "cc num needs to pass Luhn validation" do
+    @contrib_invalid.credit_card_num = 1234123412341234
+    @contrib_invalid.save
+    assert_not @contrib_invalid.valid?
+
+    @contrib1.save
+    assert @contrib1.valid?
   end
 
 end

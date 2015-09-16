@@ -28,39 +28,49 @@ class Project < ActiveRecord::Base
 		project = Project.find_by(name: project_name)
 		if !project
 			puts "Error: project [#{project_name}] not found"
-			return
+			return nil
 		end
 
-		backer = Backer.find_or_create_by!(full_name: backer_name)
-		
+		if backer_name.blank?
+			puts "Error: backer name cannot be blank"
+			return nil
+		end
+		backer = Backer.find_or_create_by(full_name: backer_name)
+
 		contribution = Contribution.create({
 			backer: backer,
 			project: project,
 			credit_card_num: credit_card_num,
 			amount: amount
 			})
-		contribution.save
-		return contribution
+		
+		if contribution.save
+			return contribution
+		else
+			puts contribution.errors.messages
+			return nil
+		end
 	end
 
 	def self.contribution_details(project_name)
 
 		project = Project.find_by(name: project_name)
 		if !project
-			puts "Error: project [#{project_name}] not found"
-			return
+			return "Error: project [#{project_name}] not found"
 		end
 
+		output = ""
 		project.contributions.each do |c|
-			puts "#{c.backer.full_name} backed for #{number_to_currency(c.amount)}"
+			output = output + "#{c.backer.full_name} backed for #{number_to_currency(c.amount)}\n"
 		end
 
 		if project.has_met_goal?
-			puts "#{project.name} is successful!"
+			output = output + "#{project.name} is successful!"
 		else
-			puts "#{project.name} needs #{number_to_currency(project.remaining_amount)} more dollars to be successful"
+			output = output + "#{project.name} needs #{number_to_currency(project.remaining_amount)} more dollars to be successful"
 		end
 
+		output
 	end
 
 	private

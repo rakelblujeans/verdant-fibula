@@ -9,8 +9,7 @@ class Backer < ActiveRecord::Base
 	def self.history(backer_name)
 		backer = Backer.find_by(full_name: backer_name)
 		if !backer
-			puts "Error: no backer found by that name"
-			return
+			return "Error: no backer found by that name"
 		end
 
 		# NOTE: This is a naive implementation
@@ -23,11 +22,12 @@ class Backer < ActiveRecord::Base
 		# Awesomer_Sauce
 		#   Backed for $75
 		# ... so on...
-
+		output = ""
 		list = backer.contributions.each do |c|
 			# -- Backed Awesome_Sauce for $50
-			puts "Backed #{c.project.name} for #{number_to_currency(c.amount)}"
+			output = output +  "Backed #{c.project.name} for #{number_to_currency(c.amount)}\n"
 		end
+		return output
 	end
 
 	private

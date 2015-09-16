@@ -92,7 +92,7 @@ task :kickstarter => :environment do
 		# ~~~
 		def list(args)
 			return unless check_args(%w[project_name], args)
-			Project.contribution_details(args[0])
+			puts Project.contribution_details(args[0])
 		end
 
 		# **4.** The `backer` input will display a list of projects that a backer
@@ -103,7 +103,7 @@ task :kickstarter => :environment do
 		# ~~~
 		def backer(args)
 			return unless check_args(%w[backer_name], args)
-			Backer.history(args[0])
+			puts Backer.history(args[0])
 		end
 
 		def split_params(text)

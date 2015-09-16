@@ -31,5 +31,18 @@ class BackerTest < ActiveSupport::TestCase
   	assert @backer2.valid?
   end
 
+  test "history gracefully handles empty giver name" do
+    assert_nothing_raised do
+      output = Backer.history("")
+      assert_match /Error/, output
+    end
+  end
+
+  test "history displays list of contributions" do
+    c1 = contributions(:one)
+    c1.backer = @backer1
+    output = Backer.history(@backer1.full_name)
+    assert_no_match /Error/, output
+  end
 
 end
