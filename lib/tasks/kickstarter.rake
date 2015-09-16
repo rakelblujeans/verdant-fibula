@@ -1,4 +1,4 @@
-require 'optparse'
+#require 'optparse'
 include ActionView::Helpers::NumberHelper
 desc "Parses commandline options specified by Kickstarter's coding test"
 task :kickstarter => :environment do
@@ -19,20 +19,20 @@ task :kickstarter => :environment do
 					puts "Fix these errors, then try again:"
 					puts "\t#{param.humanize} is missing"
 					return false
-				# else 
-				# 	puts "not blank [#{args[i]}]"
 				end
 			end
 
 			return true
 		end
 
+		# displayed anytime a user enters an unrecognized command, or types 'help'
 		def help_msg
 			puts "You can use the following commands:"
 			puts "\t project <name> <target_amount>"
 			puts "\t back <backer_name> <project_name> <credit card num> <backing amount>"
 			puts "\t list <project_name>"
 			puts "\t backer <full_name>"
+			puts "\t exit"
 		end
 
 		# ~~~
@@ -49,7 +49,7 @@ task :kickstarter => :environment do
 
 			p = Project.create({name: args[0], target_amount: args[1]})
 			if p.save
-				puts "Project #{p.name} successfully created with goal of reaching #{number_to_currency(p.target_amount)}"
+				puts "Added #{p.name} project with target of #{number_to_currency(p.target_amount)}"
 			else
 				print_errors(p)
 			end
@@ -77,8 +77,8 @@ task :kickstarter => :environment do
 			return unless check_args(%w[given_name project_name credit_card_num amount], args)
 			
 			contribution = Project.back(args[1], args[0], args[2], args[3])
-			if !contribution.has_errors?
-				puts "Contribution successfully created"
+			if contribution.valid?
+				puts "#{contribution.backer.full_name} backed project #{contribution.project.name} for #{number_to_currency(contribution.amount)}"
 			else
 				print_errors(contribution)
 			end
@@ -92,7 +92,6 @@ task :kickstarter => :environment do
 		# ~~~
 		def list(args)
 			return unless check_args(%w[project_name], args)
-
 			Project.contribution_details(args[0])
 		end
 
@@ -110,8 +109,8 @@ task :kickstarter => :environment do
 		def split_params(text)
 			# cap the maximum length of the string we want to parse
 			# for security reasons
-			max_len = 250
-			text = text[0..250]
+			max_len = 1000
+			text = text[0..max_len]
 
 			# check if someone passed in a quoted string as a param
 			# if so, count that text as 1 param
@@ -170,7 +169,17 @@ task :kickstarter => :environment do
 		end
 
 	end
+
+
+	######################################################
+	# Begin the main script flow
+	######################################################
 	
+	# clear out stale data from previous runs
+	# Backer.delete_all
+	# Project.delete_all
+	# Contribution.delete_all
+
 	parser = ParseInput.new
 	puts "Welcome! Go ahead, try out a command or two. If you need help, just type 'help' to view all commands."
 	
@@ -178,7 +187,7 @@ task :kickstarter => :environment do
 	while option != "exit"
 		option = STDIN.gets.chomp
 		words = parser.split_params(option)
-		puts words.inspect
+		#puts words.inspect
 		
 		if words.empty? || words[0].empty?
 			parser.help_msg
@@ -190,9 +199,9 @@ task :kickstarter => :environment do
 			when "back"
 				parser.back(words[1, 4])
 			when "list"
-				parser.list(words[1])
+				parser.list(words[1, 1])
 			when "backer"
-				parser.backer(words[1])
+				parser.backer(words[1, 1])
 			else
 				parser.help_msg
 			end
