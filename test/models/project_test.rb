@@ -117,4 +117,28 @@ class ProjectTest < ActiveSupport::TestCase
     assert_match /successful/, output
   end
 
+  test "remaining amount returns accurate amount" do
+    @good1 = projects(:one)
+    @good1.target_amount = 50
+    @good1.save
+    Project.back(@good1.name, "John", "378734493671000", "25")
+    assert_equal 25, @good1.remaining_amount
+  end
+
+  test "has_met_goal returns true when goal met" do
+    @good1 = projects(:one)
+    @good1.target_amount = 50
+    @good1.save
+    Project.back(@good1.name, "John", "30569309025904", "50")
+    assert_equal true, @good1.has_met_goal?
+  end
+
+  test "has_met_goal returns false if under target" do
+    @good1 = projects(:one)
+    @good1.target_amount = 50
+    @good1.save
+    Project.back(@good1.name, "John", "38520000023237", "49")
+    assert_equal false, @good1.has_met_goal?
+  end
+
 end

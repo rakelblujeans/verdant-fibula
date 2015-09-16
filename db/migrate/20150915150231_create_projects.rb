@@ -15,7 +15,7 @@ class CreateProjects < ActiveRecord::Migration
 
     create_table :contributions do |t|
       t.float :amount
-      t.string :credit_card_num
+      t.integer :credit_card_num
       t.belongs_to :project
       t.belongs_to :backer
       t.timestamps null: false
